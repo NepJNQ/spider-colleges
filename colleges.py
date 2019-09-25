@@ -55,117 +55,31 @@ def get_one_detail(url, college_data):
         for item in school_name:
             college_data.append(item)
 
-        # 学生总数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Total '
-                'number of students"]'):
-            t1 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                            't-strong"]/text()')
-            t1 = t1[0].replace(' ', '').replace('\n', '')
-        else:
-            t1 = ''
-        college_data.append(t1)
+        paths = ['Total number of students',
+                 'Number of international students',
+                 'Total number of academic staff',
+                 'Number of international staff',
+                 'Number of undergraduate degrees awarded',
+                 'Number of master\'s degrees awarded',
+                 'Number of doctoral degrees awarded',
+                 'Number of research only staff',
+                 'Number of new undergraduate students',
+                 'Number of new master\'s students',
+                 'Number of new doctoral students']
 
-        # 国际学生数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Number of '
-                'international students"]'):
-            t2 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                            't-strong"]/text()')
-            t2 = t2[0].replace(' ', '').replace('\n', '')
-        else:
-            t2 = ''
-        college_data.append(t2)
-
-        # 学术教职工
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Total number of academic staff"]'):
-            t3 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                            't-strong"]/text()')
-            t3 = t3[0].replace(' ', '').replace('\n', '')
-        else:
-            t3 = ''
-        college_data.append(t3)
-
-        # 国际职工数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Number of international staff"]'):
-            t4 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                            't-strong"]/text()')
-            t4 = t4[0].replace(' ', '').replace('\n', '')
-        else:
-            t4 = ''
-        college_data.append(t4)
-
-        # 学士授予数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Number of undergraduate degrees awarded"]'):
-            t5 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                            't-strong"]/text()')
-            t5 = t5[0].replace(' ', '').replace('\n', '')
-        else:
-            t5 = ''
-        college_data.append(t5)
-
-        # 硕士授予数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Number of master\'s degrees awarded"]'):
-            t6 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                            't-strong"]/text()')
-            t6 = t6[0].replace(' ', '').replace('\n', '')
-        else:
-            t6 = ''
-        college_data.append(t6)
-
-        # 博士授予数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Number of doctoral degrees awarded"]'):
-            t7 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                            't-strong"]/text()')
-            t7 = t7[0].replace(' ', '').replace('\n', '')
-        else:
-            t7 = ''
-        college_data.append(t7)
-
-        # 专职科研数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Number of research only staff"]'):
-            t8 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                            't-strong"]/text()')
-            t8 = t8[0].replace(' ', '').replace('\n', '')
-        else:
-            t8 = ''
-        college_data.append(t8)
-
-        # 本科新生数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Number of new undergraduate students"]'):
-            t9 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                            't-strong"]/text()')
-            t9 = t9[0].replace(' ', '').replace('\n', '')
-        else:
-            t9 = ''
-        college_data.append(t9)
-
-        # 硕士新生数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Number of new master\'s students"]'):
-            t10 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                             't-strong"]/text()')
-            t10 = t10[0].replace(' ', '').replace('\n', '')
-        else:
-            t10 = ''
-        college_data.append(t10)
-
-        # 博士新生数
-        if html.xpath(
-                '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim"]/text()[.="Number of new doctoral students"]'):
-            t11 = html.xpath('//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="right '
-                             't-strong"]/text()')
-            t11 = t11[0].replace(' ', '').replace('\n', '')
-        else:
-            t11 = ''
-        college_data.append(t11)
+        for item in paths:
+            # 通过兄弟节点判断数据存在:加入列表,去除多于空格
+            if html.xpath(
+                    '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim" and text()=$val]',
+                    val=item):
+                text = html.xpath(
+                    '//div[@class="data-item first"]//div[@class="t-slack sep"]/div[@class="t-dim" and text()=$val]/preceding-sibling::*[1]/text()',
+                    val=item)
+                text = text[0].replace(' ', '').replace('\n', '')
+            # 否则:列表中加入空元素占位
+            else:
+                text = ''
+            college_data.append(text)
 
     except ParseError as e:
         print(e.position)
